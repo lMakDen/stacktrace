@@ -2,12 +2,14 @@
   export let item;
 </script>
 
-<div>
+<div class="item">
   {item}
 </div>
 
 <style>
-  div {
-    color: red;
+  .item {
+    text-align: center;
+    color: black;
+    margin: 5px;
   }
 </style>

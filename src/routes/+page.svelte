@@ -28,9 +28,6 @@
     const isFileFromJSF = fullPath.match(jsfillerPathRegExp);
     const message = `is from JSF ${!!isFileFromJSF}, stacktrace decrypted ----> ${fullPath}`;
     messageList = [...messageList, message];
-    console.log(
-      `is from JSF ${!!isFileFromJSF}, stacktrace decrypted ----> ${fullPath}`
-    );
   };
 
   const handleOnClick = async () => {
@@ -65,6 +62,14 @@
   };
 </script>
 
-<TextArea onChange={handleTextAreaChange} />
-<Button onClick={handleOnClick} />
-<List list={messageList} />
+<div class="workspace">
+  <TextArea onChange={handleTextAreaChange} />
+  <Button onClick={handleOnClick} />
+  <List list={messageList} />
+</div>
+
+<style>
+  .workspace_body {
+    overflow: hidden;
+  }
+</style>
