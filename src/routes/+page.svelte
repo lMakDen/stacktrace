@@ -62,14 +62,6 @@
   };
 </script>
 
-<div class="workspace">
-  <TextArea onChange={handleTextAreaChange} />
-  <Button onClick={handleOnClick} />
-  <List list={messageList} />
-</div>
-
-<style>
-  .workspace_body {
-    overflow: hidden;
-  }
-</style>
+<TextArea onChange={handleTextAreaChange} />
+<Button onClick={handleOnClick} />
+<List list={messageList} />
