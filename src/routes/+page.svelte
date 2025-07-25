@@ -18,16 +18,30 @@
     lineNumber: number;
     fileName: string;
   }) => {
-    const gps = new StackTraceGPS();
-    const decrypted = await gps.pinpoint({
-      columnNumber: line.columnNumber,
-      lineNumber: line.lineNumber,
-      fileName: line.fileName,
-    });
-    const fullPath = `${decrypted.fileName}:${decrypted.lineNumber}:${decrypted.columnNumber}`;
-    const isFileFromJSF = fullPath.match(jsfillerPathRegExp);
-    const message = `is from JSF ${!!isFileFromJSF}, stacktrace decrypted ----> ${fullPath}`;
-    messageList = [...messageList, message];
+    try {
+      // Проверяем, что fileName является валидным URL
+      if (!line.fileName || !line.fileName.startsWith('http')) {
+        const message = `Invalid URL: ${line.fileName}`;
+        messageList = [...messageList, message];
+        return;
+      }
+
+      const gps = new StackTraceGPS();
+      const decrypted = await gps.pinpoint({
+        columnNumber: line.columnNumber,
+        lineNumber: line.lineNumber,
+        fileName: line.fileName,
+      });
+      const fullPath = `${decrypted.fileName}:${decrypted.lineNumber}:${decrypted.columnNumber}`;
+      const isFileFromJSF = fullPath.match(jsfillerPathRegExp);
+      const message = `is from JSF ${!!isFileFromJSF}, stacktrace decrypted ----> ${fullPath}`;
+      messageList = [...messageList, message];
+    } catch (error) {
+      // Обрабатываем ошибки загрузки файлов
+      const errorMessage = `Error processing ${line.fileName}:${line.lineNumber}:${line.columnNumber} - ${error.message}`;
+      messageList = [...messageList, errorMessage];
+      console.error('StackTrace GPS error:', error);
+    }
   };
 
   const handleOnClick = async () => {
