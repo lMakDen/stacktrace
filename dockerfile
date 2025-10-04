@@ -3,7 +3,7 @@ WORKDIR /app
 
 COPY package.json yarn.lock ./
 RUN --mount=type=secret,id=npmrc,target=/root/.npmrc \
-    yarn install --frozen-lockfile --non-interactive
+    yarn install
 
 COPY . .
 RUN yarn build
